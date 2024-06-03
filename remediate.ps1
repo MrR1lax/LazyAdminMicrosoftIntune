@@ -68,19 +68,15 @@ Foreach ($a in $DetectInfo) {
                         $log += " -> compliant"
                     } else {
                         $log += " --> Value -> Non compliant"
-                        $Exit++
                     }
                 } else {
                     $log += " --> Type -> Non compliant"
-                    $Exit++
                 }
             } else {
                 $log += " --> Name -> Non compliant"
-                $Exit++
             }
         } else {
             $log += " --> Path -> Non compliant"
-            $Exit++
         }
     } else {
         if (Get-Item -Path $a.Path -ErrorAction SilentlyContinue) {
@@ -88,7 +84,6 @@ Foreach ($a in $DetectInfo) {
                 if (($RegInfo | Where-Object {$_.RegeditType -eq $a.Type}).dotNETType -eq ((Get-ItemProperty -Path $a.Path -Name $a.Name -ErrorAction SilentlyContinue).PSObject.Properties | Where-Object {$_.Name -eq $a.Name}).TypeNameOfValue) {
                     if ($null -eq (Compare-Object (Get-ItemPropertyValue -Path $a.Path -Name $a.Name -ErrorAction SilentlyContinue) $a.Value -SyncWindow 0)) {
                         $log += " --> Value -> Non compliant"
-                        $Exit++
                     } else {
                         $log += " --> Value -> Compliant"
                     }
