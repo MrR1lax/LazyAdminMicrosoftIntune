@@ -1,8 +1,8 @@
 #$mainPath = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Definition)
-$mainPath = "C:\Users\500001702\OneDrive - MY MONEY GROUP\NotificationToast"
+$mainPath = ""
 
 # Output for report
-$outputpath = "C:\temp\Bullshit"
+$outputpath = ""
 
 # Unlock all files in project
 Get-ChildItem -Path $mainPath -recurse | ForEach-Object {Unblock-File -Path $_.FullName}
