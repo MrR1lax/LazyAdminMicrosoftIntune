@@ -1,6 +1,11 @@
 # script path
 $mainpath = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Definition)
 
+# Create report directory if not exist
+if (!(Test-path -Path "$mainpath\report")) {
+    New-Item -Path "$mainpath\report" -ItemType Directory
+}
+
 # Unlock all files in project
 Get-ChildItem -Path $mainPath -recurse | ForEach-Object {Unblock-File -Path $_.FullName}
 
