@@ -1,8 +1,5 @@
-#$mainPath = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Definition)
-$mainPath = ""
-
-# Output for report
-$outputpath = ""
+# script path
+$mainpath = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Definition)
 
 # Unlock all files in project
 Get-ChildItem -Path $mainPath -recurse | ForEach-Object {Unblock-File -Path $_.FullName}
@@ -107,7 +104,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Administrative Templates $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Administrative Templates $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 
 # Setting Catalog ALL :
 $uri = "https://graph.microsoft.com/beta/deviceManagement/configurationPolicies?`$top=100&expand=assignments"
@@ -182,8 +181,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Setting Catalog $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
-
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Setting Catalog $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 # CUSTOM + Trusted Certificate
 $uri = "https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations?`$top=1000&expand=assignments"
 $result = Invoke-RestMethod -uri $uri -Method GET -Headers @{'Authorization'="Bearer " + $tokenResult.AccessToken}
@@ -257,8 +257,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Custom $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
-###
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Custom $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 
 ### ALL APPS and assignments
 $uri =  "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps?`$expand=assignments"
@@ -341,8 +342,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Applications $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
-###
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Application $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 
 # Compliance ALL
 $uri = "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies?`$expand=assignments"
@@ -421,7 +423,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Compliances $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Compliance $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 
 ### Remediations ALL
 $uri = "https://graph.microsoft.com/beta/deviceManagement/deviceHealthScripts?`$expand=assignments"
@@ -507,8 +511,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Remediations $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
-###
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Remediation $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 
 # Windows Scripts
 $uri = "https://graph.microsoft.com/beta/deviceManagement/deviceManagementScripts?`$expand=assignments"
@@ -585,7 +590,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\Windows scripts $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\Windows script $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 ###
 
 # macOS Scripts
@@ -663,7 +670,9 @@ foreach ($a in ($results | Where-Object {$_.assignments})) {
         }
     }
 }
-$rapport | Export-Csv -Path "$outputpath\macOS scripts $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+if ($rapport) {
+    $rapport | Export-Csv -Path "$mainpath\report\macOS scripts $(Get-Date -Format yyyy-MM-dd_hh-mm-ss).csv" -NoTypeInformation -Encoding Unicode
+}
 ###
 
 <# Research d'App
